@@ -12,12 +12,12 @@ public class Movie{
 
     private String title;
     private String description;
-    private double rating;
+    private Double rating;
 
     @Enumerated(EnumType.STRING)
     private Genre genre;
     private String director;
-    private int year;
+    private Integer year;
 
     public long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Movie{
         this.description = description;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
@@ -67,11 +67,11 @@ public class Movie{
         this.director = director;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 }
