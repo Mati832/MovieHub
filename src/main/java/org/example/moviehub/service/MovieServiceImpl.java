@@ -40,7 +40,7 @@ public class MovieServiceImpl implements MovieService {
         existingMovie.setTitle(movie.getTitle());
         existingMovie.setDescription(movie.getDescription());
         existingMovie.setRating(movie.getRating());
-        existingMovie.setGenre(movie.getGenre());
+        existingMovie.setGenres(movie.getGenres());
         existingMovie.setDirector(movie.getDirector());
         existingMovie.setYear(movie.getYear());
 

@@ -1,6 +1,6 @@
 package org.example.moviehub.enums;
 
-public enum Genre {
+public enum GenreType {
     ACTION,
     COMEDY,
     DRAMA,

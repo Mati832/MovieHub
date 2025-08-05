@@ -1,29 +1,44 @@
 package org.example.moviehub.model;
 
 import jakarta.persistence.*;
-import org.example.moviehub.enums.Genre;
+
+
+import java.util.Set;
 
 @Access(AccessType.FIELD)
 @Entity
 public class Movie{
 
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String title;
     private String description;
     private Double rating;
 
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Genre> genres;
     private String director;
     private Integer year;
 
-    public long getId() {
+    //constructors
+    public Movie() {}
+
+    public Movie(String title, String description, Double rating, Set<Genre>genres, String director, Integer year) {
+        this.title = title;
+        this.description = description;
+        this.rating = rating;
+        this.genres = genres;
+        this.director = director;
+        this.year = year;
+    }
+
+    //getter and setter
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -51,12 +66,12 @@ public class Movie{
         this.rating = rating;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public Set<Genre> getGenres() {
+        return genres;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
     public String getDirector() {
@@ -74,4 +89,5 @@ public class Movie{
     public void setYear(Integer year) {
         this.year = year;
     }
+
 }
