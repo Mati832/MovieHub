@@ -20,8 +20,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth").permitAll() //das worauf jeder zugriff haben muss
-                .requestMatchers("/api/admin/**").hasRole(RoleType.ROLE_ADMIN.name())); //hier dann die parts die eingeschränkt werden sollen
+                .requestMatchers("/api/auth/**").permitAll() //das worauf jeder zugriff haben muss
+                .requestMatchers("/api/admin/**").hasAuthority(RoleType.ROLE_ADMIN.name())); //hier dann die parts die eingeschränkt werden sollen
 
         return http.build();
     }

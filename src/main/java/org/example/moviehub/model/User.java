@@ -14,7 +14,7 @@ public class User {
     private long id;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
     @NotBlank
     @Column(nullable = false)
