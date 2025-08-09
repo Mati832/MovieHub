@@ -1,13 +1,11 @@
 package org.example.moviehub.controller;
 
 import jakarta.validation.Valid;
-import org.example.moviehub.dto.RegisterRequest;
-import org.example.moviehub.repository.RoleRepository;
-import org.example.moviehub.repository.UserRepository;
-import org.example.moviehub.service.UserService;
+import org.example.moviehub.dto.AuthenticationResponse;
+import org.example.moviehub.dto.AuthenticationRequest;
+import org.example.moviehub.service.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        userService.registerUser(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+    public ResponseEntity<AuthenticationResponse> registerUser(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.registerUser(authenticationRequest));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.authenticate(authenticationRequest));
     }
 }

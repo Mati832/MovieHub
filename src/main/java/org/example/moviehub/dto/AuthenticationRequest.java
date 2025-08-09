@@ -7,7 +7,7 @@ import org.example.moviehub.model.Role;
 
 import java.util.Set;
 
-public class RegisterRequest {
+public class AuthenticationRequest {
 
     @NotBlank(message = "Password must not be blank")
     @Pattern(
@@ -21,18 +21,18 @@ public class RegisterRequest {
     private String username;
     private Set<Role> roles;
 
-    public RegisterRequest(String password, String username, Set<Role> roles) {
+    public AuthenticationRequest(String password, String username, Set<Role> roles) {
         this.password = password;
         this.username = username;
         this.roles = roles;
     }
 
-    public RegisterRequest(String password, String username) {
+    public AuthenticationRequest(String password, String username) {
         this.password = password;
         this.username = username;
     }
 
-    public RegisterRequest() {
+    public AuthenticationRequest() {
     }
 
     public String getPassword() {

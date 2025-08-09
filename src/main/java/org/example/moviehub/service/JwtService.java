@@ -5,17 +5,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.example.moviehub.model.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -47,6 +48,13 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .compact();
     }
+    public String generateToken(Map<String, Object> extraClaims, User user) {
+        org.springframework.security.core.userdetails.User user1 = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleType().name())).collect(Collectors.toList()));
+        return generateToken(extraClaims, user1);
+    }
+    public String generateToken(User user) {
+        return generateToken(new HashMap<>(), user);
+    }
 
 
     public boolean isTokenExpired(Claims claims) {
@@ -54,7 +62,7 @@ public class JwtService {
     }
 
     public JwtService(@Value("${moviehub.security.authentication.jwt.secret-key}") String secretKey,
-                      @Value("${moviehub.security.authentication.jwt.token-expiration-time}")Duration tokenExpirationTime) {
+                      @Value("${moviehub.security.authentication.jwt.token-expiration-time}") Duration tokenExpirationTime) {
         SECRET_KEY = secretKey;
         TOKEN_EXPIRATION_TIME = tokenExpirationTime;
     }
