@@ -1,8 +1,14 @@
 package org.example.moviehub.service;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.moviehub.model.Movie;
 import org.example.moviehub.repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +54,16 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovie(Long id) {
-        movieRepository.deleteById(id);
+    public void deleteMovie(Long id) { movieRepository.deleteById(id); }
+
+    @Override
+    public void deleteAllMovies() {
+        movieRepository.deleteAll();
+    }
+
+
+    @Cacheable(cacheNames = "searchCache", key = "#query")
+    public List<Movie> searchMoviesByTitle(String query) {
+        return movieRepository.searchMoviesByTitle(query);
     }
 }

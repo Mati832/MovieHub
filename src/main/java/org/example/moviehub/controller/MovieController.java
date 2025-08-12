@@ -42,4 +42,10 @@ public class MovieController {
     public void deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
     }
+
+    @GetMapping("/search")
+    public List<Movie> searchMoviesByTitle(@RequestParam("query") String query) {
+        return movieService.searchMoviesByTitle(query);
+    }
+
 }
