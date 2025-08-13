@@ -1,9 +1,13 @@
 package org.example.moviehub.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import org.example.moviehub.dto.MovieDto;
 
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Access(AccessType.FIELD)
 @Entity
@@ -16,10 +20,13 @@ public class Movie{
     private String description;
     private Double rating;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Genre> genres;
     private String director;
     private Integer year;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<MovieThumbnail> thumbnails = new HashSet<>();
 
     //constructors
     public Movie() {}
@@ -31,6 +38,9 @@ public class Movie{
         this.genres = genres;
         this.director = director;
         this.year = year;
+    }
+    public Movie(MovieDto movieDto) {
+        this(movieDto.getTitle(), movieDto.getDescription(), movieDto.getRating(), movieDto.getGenres().stream().map(genreDto->new Genre(genreDto)).collect(Collectors.toSet()),movieDto.getDirector(),movieDto.getYear());
     }
 
     //getter and setter
@@ -90,4 +100,14 @@ public class Movie{
         this.year = year;
     }
 
+    public Set<MovieThumbnail> getThumbnails() { return thumbnails; }
+
+    public void addThumbnail(MovieThumbnail thumbnail) {
+        this.thumbnails.add(thumbnail);
+        thumbnail.setMovie(this);
+    }
+    public void removeThumbnail(MovieThumbnail thumbnail) {
+        this.thumbnails.remove(thumbnail);
+        thumbnail.setMovie(null);
+    }
 }

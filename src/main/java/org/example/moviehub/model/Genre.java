@@ -1,6 +1,7 @@
 package org.example.moviehub.model;
 
 import jakarta.persistence.*;
+import org.example.moviehub.dto.GenreDto;
 import org.example.moviehub.enums.GenreType;
 
 @Access(AccessType.FIELD)
@@ -15,6 +16,10 @@ public class Genre {
     //constructor
     public Genre(GenreType genreType) {
         this.genreType = genreType;
+    }
+    public Genre(GenreDto genreDto) {
+        this.genreType=genreDto.genreType();
+        this.id = genreDto.id();
     }
 
     public Genre() {}

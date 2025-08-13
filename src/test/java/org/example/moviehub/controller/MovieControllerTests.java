@@ -1,5 +1,6 @@
 package org.example.moviehub.controller;
 
+import org.example.moviehub.dto.MovieDto;
 import org.example.moviehub.model.Movie;
 import org.example.moviehub.service.MovieService;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,15 @@ public class MovieControllerTests {
         Long id = 1L;
         Movie movie = new Movie();
         movie.setId(id);
-        Mockito.when(movieService.getMovieById(id)).thenReturn(Optional.of(movie));
+        Mockito.when(movieService.getMovieById(id)).thenReturn(Optional.of(new MovieDto(movie)));
 
         mockMvc.perform(get("/api/movies/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id));
+    }
+
+    @Test
+    void testUploadMovieThumbnail() throws Exception {
+
     }
 }

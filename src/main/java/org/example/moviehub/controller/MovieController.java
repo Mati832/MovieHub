@@ -1,10 +1,11 @@
 package org.example.moviehub.controller;
 
-import org.example.moviehub.model.Movie;
+import org.example.moviehub.dto.MovieDto;
+import org.example.moviehub.dto.MultipartFileDto;
 import org.example.moviehub.service.MovieService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,22 +20,22 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getAllMovies() {
+    public List<MovieDto> getAllMovies() {
         return movieService.getAllMovies();
     }
 
     @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable Long id) {
+    public MovieDto getMovieById(@PathVariable Long id) {
         return movieService.getMovieById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie with id " + id + " not found"));
     }
 
     @PostMapping
-    public Movie createMovie(@RequestBody Movie movie) {
+    public MovieDto createMovie(@RequestBody MovieDto movie) {
         return movieService.createMovie(movie);
     }
 
     @PutMapping("/{id}")
-    public Movie updateMovie(@PathVariable Long id,@RequestBody Movie movie) {
+    public MovieDto updateMovie(@PathVariable Long id, @RequestBody MovieDto movie) {
         return movieService.updateMovie(id, movie);
     }
 
@@ -44,8 +45,16 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public List<Movie> searchMoviesByTitle(@RequestParam("query") String query) {
+    public List<MovieDto> searchMoviesByTitle(@RequestParam("query") String query) {
         return movieService.searchMoviesByTitle(query);
     }
 
+    @PostMapping("/upload/thumbnail")
+    public MovieDto uploadMovieThumbnail(
+            @RequestParam("id") Long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "description", required = false) String description) {
+
+        return movieService.addMovieThumbnail(id, new MultipartFileDto(file, description));
+    }
 }

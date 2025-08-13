@@ -1,5 +1,6 @@
 package org.example.moviehub.service;
 
+import org.example.moviehub.dto.MovieDto;
 import org.example.moviehub.model.Movie;
 import org.example.moviehub.repository.MovieRepository;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +27,7 @@ class MovieServiceImplTest {
         movie.setTitle("title");
         try {
             Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenReturn(movie);
-            Movie created = movieServiceImpl.createMovie(movie);
+            Movie created = new Movie(movieServiceImpl.createMovie(new MovieDto(movie)));
             Assertions.assertEquals("title", created.getTitle());
             Mockito.verify(movieRepository, Mockito.times(1)).save(movie);
         } catch (Exception e) {

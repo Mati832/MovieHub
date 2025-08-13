@@ -1,23 +1,26 @@
 package org.example.moviehub.service;
 
-import org.example.moviehub.model.Movie;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.example.moviehub.dto.MovieDto;
+import org.example.moviehub.dto.MultipartFileDto;
+
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MovieService {
-    List<Movie> getAllMovies();
+    List<MovieDto> getAllMovies();
 
-    Optional<Movie> getMovieById(Long id);
+    Optional<MovieDto> getMovieById(Long id);
 
-    Movie createMovie(Movie movie);
+    MovieDto createMovie(MovieDto movie);
 
-    Movie updateMovie(Long id, Movie movie);
+    MovieDto updateMovie(Long id, MovieDto movie);
 
     void deleteMovie(Long id);
 
     void deleteAllMovies();
 
-    List<Movie> searchMoviesByTitle(String query);
+    List<MovieDto> searchMoviesByTitle(String query);
+
+    MovieDto addMovieThumbnail(Long movieId, MultipartFileDto file);
 }
